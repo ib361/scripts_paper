@@ -6,7 +6,7 @@ library("ggpubr")
 require(scales)
 library("MASS")
 
-df_correct <- read.table(file = "rd_results_cor_final.tsv", sep = '\t', header = F)
+df_correct <- read.table(file = "../results/rd_results_cor_final.tsv", sep = '\t', header = F)
 colnames(df_correct) <- c("sample", "rd")
 df_correct$throughput <- "throughput"
 df_correct$throughput <- c(1763967379, 1463877581, 745081558,
@@ -24,9 +24,9 @@ df_correct$tag <- c("Fragmentation","Fragmentation","Fragmentation",
 
 subset<- df_correct[(df_correct$throughput > 10^8.8),]
 subset$rangeth <- "<10^9"
-subset$rangeth[(subset$throughput >= 10^9)]<- ">=10^9"
-subset$facets = factor(subset$rangeth, labels = c("'<'~10^{9}",
-                                                  "'>='~10^{9}"))
+subset$rangeth[(subset$throughput >= 10^9)]<- ">=10^9~kbp"
+subset$facets = factor(subset$rangeth, labels = c("'<'~10^{9}~kbp",
+                                                  "'>='~10^{9}~kbp"))
 subset %>% 
   ggplot(aes(y = rd)) +
   geom_boxplot(aes(x = subset$facets, fill = tag),
@@ -45,7 +45,7 @@ subset %>%
        fill = "Library protocol") +
   scale_y_continuous(breaks = seq(0,290,20),
                      minor_breaks = F)+
-  theme_bw(base_size = 25) +
+  theme_bw(base_size = 35) +
   theme(panel.grid = element_blank(),
         axis.text.x.bottom = element_blank(),
         axis.ticks.x.bottom = element_blank(),
